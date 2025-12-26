@@ -8,7 +8,7 @@ const authMiddleware = (req, res, next) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!accessToken && !refreshToken) {
-    return res.status(401).json({ success: false, message: 'Unauthorized' });
+    return res.status(401).json({ success: false, message: 'Unauthorized',isAuth:false });
   }
 
   if (accessToken) {
@@ -17,9 +17,9 @@ const authMiddleware = (req, res, next) => {
         return next();
       }
 
-      if (err.name !== 'TokenExpiredError') {
-        return res.status(401).json({ success: false, message: 'Invalid token' });
-      }
+      // if (err.name !== 'TokenExpiredError') {
+      //   return res.status(401).json({ success: false, message: 'Invalid token' });
+      // }
 
       handleRefreshToken(req, res, next, refreshToken);
     });
@@ -35,7 +35,7 @@ const handleRefreshToken = (req, res, next, refreshToken) => {
 
   jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ success: false, message: 'Session expired' });
+      return res.status(401).json({ success: false, message: 'Session expired',isExpired: true });
     }
 
     const newAccessToken = jwt.sign(
