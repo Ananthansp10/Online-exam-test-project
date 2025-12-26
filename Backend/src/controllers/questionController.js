@@ -5,31 +5,52 @@ import { Question, Option } from "../models/index.js";
 
 export const addQuestion = async (req, res) => {
   try {
-    const { examId, questionText, type, marks, options } = req.body;
+    const questions = req.body;
 
-    if (!examId || !questionText || !type || !marks || !options?.length) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({ success:false, message: ERROR_MESSAGES.MISSING_FIELDS });
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payload"
+      });
     }
 
-    const question = await Question.create({
-      examId,
-      questionText,
-      type,
-      marks
+    for (const q of questions) {
+      const { examId, questionText, type, marks, options } = q;
+
+      if (!examId || !questionText || !type || !marks || !options?.length) {
+        return res.status(400).json({
+          success: false,
+          message: "Missing fields"
+        });
+      }
+
+      const question = await Question.create({
+        examId,
+        questionText,
+        type,
+        marks
+      });
+
+      const optionData = options.map(c => ({
+        questionId: question.id,
+        optionText: c.text,
+        isCorrect: c.isCorrect
+      }));
+
+      await Option.bulkCreate(optionData);
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "Questions added successfully"
     });
 
-    const optionData = options.map(opt => ({
-      questionId: question.id,
-      optionText: opt.optionText,
-      isCorrect: opt.isCorrect
-    }));
-
-    await Option.bulkCreate(optionData);
-
-    res.status(STATUS_CODES.OK).json({ success:true, message: SUCCESS_MESSAGES.QUESTION_ADDED, question });
-  } catch (err) {
-    console.error(err);
-    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({ success:false, message: ERROR_MESSAGES.INTERNAL_SERVER_ERROR_MESSAGE });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
   }
 };
 
@@ -46,7 +67,7 @@ export const getQuestionsByExam = async (req, res) => {
         }
       ]
     });
-
+    console.log(questions)
     res.status(STATUS_CODES.OK).json({ success:true, questions });
   } catch (err) {
     console.error(err);

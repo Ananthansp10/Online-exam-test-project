@@ -6,8 +6,8 @@ import { createExam, getAllExams, getExamById } from '../controllers/examControl
 
 router.post("/create-exam",verifyToken,verifyRole("admin"),createExam)
 
-router.get("/get-exams",verifyToken,verifyRole("admin"),getAllExams)
+router.get("/get-exams",verifyToken,verifyRole("admin","user"),getAllExams)
 
-router.get("/get-exam/:id",verifyToken,verifyRole("admin"),getExamById)
+router.get("/get-exam/:id",verifyToken,verifyRole("admin","user"),getExamById)
 
 export default router

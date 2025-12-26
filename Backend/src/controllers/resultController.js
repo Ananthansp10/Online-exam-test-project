@@ -1,17 +1,17 @@
 import Result from "../models/resultModel.js";
-import Question from "../models/questionModel.js";
-import Option from "../models/optionModel.js";
+import Question from "../models/questionsModel.js";
+import Option from "../models/optionsModel.js";
 
 export const submitExam = async (req, res) => {
   try {
-    const { examId, answers, startTime, duration } = req.body;
+    const { examId, answers, startTime, duration, userId } = req.body;
 
     const examEndTime = new Date(new Date(startTime).getTime() + duration * 60000);
     if (new Date() > examEndTime) {
       return res.status(400).json({ message: "Exam time expired" });
     }
 
-    const existingResult = await Result.findOne({ where: { examId, userId: req.user.id } });
+    const existingResult = await Result.findOne({ where: { examId, userId: userId } });
     if (existingResult) {
       return res.status(403).json({ message: "You have already attempted this exam" });
     }
@@ -36,7 +36,7 @@ export const submitExam = async (req, res) => {
 
     const result = await Result.create({
       examId,
-      userId: req.user.id,
+      userId: userId,
       score: totalScore,
       totalMarks
     });

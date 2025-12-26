@@ -28,15 +28,16 @@ export const createExam = async (req, res) => {
 
 export const getAllExams = async (req, res) => {
   try {
-    const exams = await Exam.findAll({
-      include: [
-        {
-          model: Question,
-          attributes: ["id", "questionText", "type", "marks"]
-        }
-      ]
-    });
-
+    const exams = await Exam.findAll({attributes: [
+      'id',
+      'title',
+      'description',
+      'duration',
+      'totalMarks',
+      'isActive'
+    ],
+      raw: true}
+    );
     res.status(STATUS_CODES.OK).json({ success: true, exams });
   } catch (err) {
     console.error(err);
@@ -49,20 +50,14 @@ export const getExamById = async (req, res) => {
     const examId = req.params.id;
 
     const exam = await Exam.findOne({
-      where: { id: examId },
-      include: [
-        {
-          model: Question,
-          attributes: ["id", "questionText", "type", "marks"]
-        }
-      ]
+      where: { id: examId },attributes: ['id', 'title', 'description', 'duration', 'totalMarks'],raw:true
     });
 
     if (!exam) {
       return res.status(STATUS_CODES.NOT_FOUND).json({ success:true, message: ERROR_MESSAGES.EXAM_NOT_FOUND });
     }
 
-    res.status(STATUS_CODES.OK).json({ success:true, exam });
+    res.status(STATUS_CODES.OK).json({ success:true, data:exam });
   } catch (err) {
     console.error(err);
     res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({ success:true, message: ERROR_MESSAGES.INTERNAL_SERVER_ERROR_MESSAGE });

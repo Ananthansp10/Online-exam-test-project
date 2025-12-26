@@ -62,7 +62,7 @@ export const userSignin = async (req,res) => {
                     sameSite:"none",
                     maxAge:parseInt(process.env.REFRESH_TOKEN_MAX_AGE)
                 })
-                res.status(STATUS_CODES.OK).json({success:true,message:SUCCESS_MESSAGES.USER_LOGGEEDIN,data:{userId:isUserExist.id,email:isUserExist.email}})
+                res.status(STATUS_CODES.OK).json({success:true,message:SUCCESS_MESSAGES.USER_LOGGEEDIN,data:{userId:isUserExist.id,email:isUserExist.email,name:isUserExist.name}})
             }
         }
     } catch (error) {

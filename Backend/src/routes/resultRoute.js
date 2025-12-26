@@ -1,5 +1,5 @@
 import express from 'express'
-import { startExam } from '../controllers/examController'
+import { startExam } from '../controllers/examController.js'
 import verifyToken from '../middleware/verifyToken.js'
 import verifyRole from '../middleware/roleVerify.js'
 import { submitExam } from '../controllers/resultController.js'

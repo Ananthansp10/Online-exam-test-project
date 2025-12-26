@@ -6,6 +6,6 @@ import { addQuestion, getQuestionsByExam } from '../controllers/questionControll
 
 router.post('/add-question',verifyToken,verifyRole("admin"),addQuestion)
 
-router.get('/get-question/:examId',verifyToken,verifyRole("admin"),getQuestionsByExam)
+router.get('/get-question/:examId',verifyToken,verifyRole("user"),getQuestionsByExam)
 
 export default router
