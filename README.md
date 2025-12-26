@@ -73,7 +73,7 @@ npm or yarn
 
 Steps
 
-Clone the repository:git clone https://github.com/yourusername/online-examination-system.git
+Clone the repository:https://github.com/Ananthansp10/Online-exam-test-project.git
 
 Install backend dependencies:
 
