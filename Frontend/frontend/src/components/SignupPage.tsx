@@ -29,7 +29,6 @@ const SignupPage: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isValid, setIsValid] = useState<FormErrors>({});
 
   const navigate = useNavigate();
 

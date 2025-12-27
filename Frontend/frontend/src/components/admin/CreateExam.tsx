@@ -79,6 +79,8 @@ const CreateExam: React.FC = () => {
     }
   };
 
+  setLoading(false)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 pt-20">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
