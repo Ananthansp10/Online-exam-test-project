@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createExam } from '../../services/adminServices';
 import toast from 'react-hot-toast';
@@ -78,6 +78,10 @@ const CreateExam: React.FC = () => {
         })
     }
   };
+
+  useEffect(()=>{
+    setLoading(false)
+  },[])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 pt-20">
