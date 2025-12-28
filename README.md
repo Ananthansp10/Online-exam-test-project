@@ -95,6 +95,9 @@ Start frontend development server:
 cd ../frontend
 npm run dev
 
+Admin Email :- admin@gmail.com
+Admin Password :- Admin@123
+
 Backend env :-
 
 DB_HOST=localhost
